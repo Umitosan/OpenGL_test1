@@ -11,39 +11,19 @@
 
 #include <iostream>
 
-#include <string>
-#include <stdio.h> 
-#include <stdlib.h> 
-
-
-
-void updateAnimation(float* x, int* bounceDir)
-{
-	if ( ( *x >= 0.99f) || (*x <= -0.99f) ) {
-		*bounceDir *= -1;
-		*x += ( *bounceDir * 0.005f);
-	}
-	*x += (*bounceDir * 0.005f);
-	//std::cout << "x = " << *x << std::endl;
-}
+//#include <string>
+//#include <stdio.h> 
+//#include <stdlib.h> 
 
 
 int main(void)
 {
 	GLFWwindow* window;
-	unsigned int timer = 0;
-	float x,y;
-	float* xptr = &x;
-	x = -0.9f;
-	y = 0.9f;
-	int bounceDir = 1;
-	int* bounceDirPtr = &bounceDir;
 
 	/* Initialize the library */
 	if (!glfwInit()) {
 		return -1;
 	}
-		
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(800, 600, "OpenGL Rocks", NULL, NULL);
@@ -62,6 +42,8 @@ int main(void)
 	else {
 		std::cout << "GLEW initialized!" << std::endl;
 	}
+
+	std::cout << "OpenGL Version = " << glGetString(GL_VERSION) << std::endl;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -108,37 +90,7 @@ int main(void)
 			glVertex2f(0.5f / 2.0f, -0.0f);
 			glVertex2f(1.0f / 2.0f, -1.0f / 2.0f);			
 			
-			// anim triangle
-			glColor3ub(150, 50, 150);
-			glVertex2f(x,y);
-			glVertex2f(x+0.05f,y-0.05f);
-			glVertex2f(x-0.05f, y-0.05f);
-			
-			//glColor3ub(255, 0, 0);
-			//glVertex2f(0.0f, -1.0f / 2.0f);
-			//glVertex2f(0.5f / 2.0f, -0.0f);
-			//glVertex2f(1.0f / 2.0f, -1.0f / 2.0f);			
-			//
-			//glColor3ub(255, 0, 0);
-			//glVertex2f(0.0f, -1.0f / 2.0f);
-			//glVertex2f(0.5f / 2.0f, -0.0f);
-			//glVertex2f(1.0f / 2.0f, -1.0f / 2.0f);
-
 			glEnd(); // triangles	
-		}
-
-		glBegin(GL_POINTS);
-		{
-			//glPointSize(1.0f);
-			glColor3f(0.0f, 0.5f, 0.5f);
-			glVertex2f(x, y);		
-
-			//glColor3f(0.0f, 0.0f, 1.0f);
-			//glVertex2f(x-0.005, y-0.005);	
-
-			//glColor3f(0.0f, 0.0f, 1.0f);
-			//glVertex2f(x-0.005, y+0.005);
-			glEnd();
 		}
 
 		/* Swap front and back buffers */
@@ -146,17 +98,6 @@ int main(void)
 
 		/* Poll for and process events */
 		glfwPollEvents();
-
-		// animation timer
-		if (timer >= 1) 
-		{
-			timer = 0;
-			updateAnimation(xptr, bounceDirPtr);
-		}
-		else 
-		{
-			timer += 1;
-		}
 
 	} // while loop
 
