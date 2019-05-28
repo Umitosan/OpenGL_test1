@@ -6,14 +6,10 @@
 // GLFW - allows us to use raw OpenGL code
 
 
-#include <GL/glew.h>
+#include <GL/glew.h> // this MUST be included before glfw3.h
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-
-//#include <string>
-//#include <stdio.h> 
-//#include <stdlib.h> 
 
 
 int main(void)
@@ -41,10 +37,26 @@ int main(void)
 	}
 	else {
 		std::cout << "GLEW initialized!" << std::endl;
+		std::cout << "OpenGL Version = " << glGetString(GL_VERSION) << std::endl;
 	}
 
-	std::cout << "OpenGL Version = " << glGetString(GL_VERSION) << std::endl;
+	float positions[6] = {
+		-0.5f, -0.5f,
+		 0.0f, 0.5f,
+		 0.5f, -0.5f
+	};
 
+	// OpenGL is a "state" machine
+	// many functions return an 'ID', basically and interger ID for the object, buffer, texture, shader, etc
+	//   then... you use that ID henceforth with OpenGL when you want to refer to that object
+	unsigned int buffer; // buffer is just and 'ID' to 'grab' the OpenGL object
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer); // just a buffer of memory, thus 'GL_ARRAY_BUFFER'
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+	///////////////////////////////////////////
+	// MAIN GAME LOOP
+	///////////////////////////////////////////
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -54,44 +66,11 @@ int main(void)
 		// by default open GL uses -1 to +1 in every dimention x,y,z
 		/* RENDER COOL STUFF */
 
-	    // triangle top
-		glBegin(GL_TRIANGLES);
-		{
-			//glColor3f(0.0f, 1.0f, 0.0f);
-			glColor3ub(255, 0, 0);
-			glVertex2f(-0.5f, 0.0f);
-			glVertex2f(0.0f, 1.0f);
-			glVertex2f(0.5f, 0.0f);
-			// small inside
-			glColor3ub(0, 255, 0);
-			glVertex2f(-0.5f / 2.0f, 0.0f);
-			glVertex2f(0.0f, 1.0f / 2.0f);
-			glVertex2f(0.5f / 2.0f, 0.0f);
-
-			// triangle bot left
-			glColor3ub(0, 255, 0);
-			glVertex2f(-1.0f, -1.0f);
-			glVertex2f(-0.5f, 0.0f);
-			glVertex2f(0.0f, -1.0f);
-			// small inside
-			glColor3ub(0, 0, 255);
-			glVertex2f(-1.0f / 2.0f, -1.0f / 2.0f);
-			glVertex2f(-0.5f / 2.0f, 0.0f);
-			glVertex2f(0.0f, -1.0f / 2.0f);
-
-			// triangle bot right
-			glColor3ub(0, 0, 255);
-			glVertex2f(0.0f, -1.0f);
-			glVertex2f(0.5f, -0.0f);
-			glVertex2f(1.0f, -1.0f);
-			// small inside
-			glColor3ub(255, 0, 0);
-			glVertex2f(0.0f, -1.0f / 2.0f);
-			glVertex2f(0.5f / 2.0f, -0.0f);
-			glVertex2f(1.0f / 2.0f, -1.0f / 2.0f);			
-			
-			glEnd(); // triangles	
-		}
+		// use this if you don't have an index buffer
+		// this knows which buffer to draw because we previously bound a buffer using 'glBindBuffer()'
+		glDrawArrays(GL_TRIANGLES, 0, 3); // glDrawArrays(mode, start array index, number of indicies to be rendered)
+		
+		//glDrawElements();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
