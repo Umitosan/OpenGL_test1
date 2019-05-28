@@ -6,33 +6,24 @@
 // GLFW - allows us to use raw OpenGL code
 
 
-#include <iostream>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <array>
+
+#include <iostream>
+
 #include <string>
 #include <stdio.h> 
 #include <stdlib.h> 
 
 
-int getRandColorInt()
-{
-	int colInt;
-	colInt = rand();
-	for (size_t i = 0; i < 10; i++)
-	{
-		std::cout << colInt << std::endl;
-	}
-	return colInt;
-}
 
 void updateAnimation(float* x, int* bounceDir)
 {
-	if ( ( *x >= 0.99) || (*x <= -0.99) )
-	{
+	if ( ( *x >= 0.99f) || (*x <= -0.99f) ) {
 		*bounceDir *= -1;
-		*x += ( *bounceDir * 0.005);
+		*x += ( *bounceDir * 0.005f);
 	}
-	*x += (*bounceDir * 0.005);
+	*x += (*bounceDir * 0.005f);
 	//std::cout << "x = " << *x << std::endl;
 }
 
@@ -43,19 +34,20 @@ int main(void)
 	unsigned int timer = 0;
 	float x,y;
 	float* xptr = &x;
-	x = -0.9;
-	y = 0.9;
+	x = -0.9f;
+	y = 0.9f;
 	int bounceDir = 1;
 	int* bounceDirPtr = &bounceDir;
 
 	/* Initialize the library */
-	if (!glfwInit())
+	if (!glfwInit()) {
 		return -1;
+	}
+		
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(800, 600, "OpenGL Rocks", NULL, NULL);
-	if (!window)
-	{
+	if (!window) {
 		glfwTerminate();
 		return -1;
 	}
@@ -63,7 +55,13 @@ int main(void)
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
-	getRandColorInt();
+	// GLEW MUST be INITIALIZED after valid GL context is defeind... aka "glfwMakeContextCurrent(window)"
+	if (glewInit() != GLEW_OK) {
+		std::cout << "GLEW didn't init properly" << std::endl;
+	}
+	else {
+		std::cout << "GLEW initialized!" << std::endl;
+	}
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -113,8 +111,8 @@ int main(void)
 			// anim triangle
 			glColor3ub(150, 50, 150);
 			glVertex2f(x,y);
-			glVertex2f(x+0.05,y-0.05);
-			glVertex2f(x-0.05, y-0.05);
+			glVertex2f(x+0.05f,y-0.05f);
+			glVertex2f(x-0.05f, y-0.05f);
 			
 			//glColor3ub(255, 0, 0);
 			//glVertex2f(0.0f, -1.0f / 2.0f);
