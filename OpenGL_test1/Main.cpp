@@ -54,8 +54,35 @@ int main(void)
 	glBindBuffer(GL_ARRAY_BUFFER, buffer); // just a buffer of memory, thus 'GL_ARRAY_BUFFER'
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
+	{
+		// buffers contain data and it's up to us to tell openGL what's in that buffer
+		// glVertexAttribPointer()  tells openGL what shape the data is in it
+
+		// in this example a 'vertex' = (postion, vector, normal)
+		// position vector and normal ar 'attributes' of the vertex in the buffer
+
+		//void glVertexAttribPointer(GLuint index,             // index in buffer to begin at
+		//							 GLint size,               // componant count in buffer: number of groupings of discreet items with multiple attribuites
+		//	                         GLenum type,              // type of attribute (  )
+		//                           GLboolean normalized,     // leave false
+		//	                         GLsizei stride,           // stride: # of BYTES occupied by each discrete data group for 1 item --> 1 thing in buffer = sizeof(position) + sizeof(vector) + sizeof(normal) etc
+		//	                         const GLvoid * pointer);  // pointer to beginning of attribute, use offsetOf()
+    }
+	glVertexAttribPointer( /* GLuint index */ 0, 
+	                       /* GLint size   */ 2,
+		                   /* GLenum type  */ GL_FLOAT,
+		                   /* GLboolean normalized*/ GL_FALSE,   
+		                   /* GLsizei stride */ (sizeof(float) * 2),
+						   /* const GLvoid * pointer) */ 0
+	                      );
+
+	//void glEnableVertexAttribArray(GLuint index);
+	glEnableVertexAttribArray(0); // in this case, the arg is an index of vertex to enable
+	
+
+
 	///////////////////////////////////////////
-	// MAIN GAME LOOP
+	// MAIN GAME LOOP	         
 	///////////////////////////////////////////
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
