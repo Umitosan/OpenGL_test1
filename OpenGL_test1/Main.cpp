@@ -12,8 +12,21 @@
 #include <iostream>
 
 
+//void updateRowPlacement(float arr[], const int arrTotal)
+//{
+//	std::cout << "arr[i] = " << arr[1] << std::endl;
+//
+//	for (int i = 1; i < 60; i += 2)
+//	{
+//		arr[i] = arr[i] + 0.01f;
+//	}
+//}
+
+
+
 int main(void)
 {
+
 	GLFWwindow* window;
 
 	/* Initialize the library */
@@ -46,13 +59,37 @@ int main(void)
 		 0.5f, -0.5f
 	};
 
+
+	// test ////////////////////////////////////
+	//const int positions2_total = 120;
+	//float positions2[positions2_total];
+	//float xStartOffset = -0.95f;
+	//float top = 1.0f;
+	//for (int i = 0; i < (positions2_total/6); i++)
+	//{
+	//	int triIndex = (i * 6);
+	//	// tri x1,y1
+	//	positions2[triIndex] = xStartOffset + (i*0.1f);
+	//	positions2[triIndex + 1] = (top);
+	//	// tri x2,y2
+	//	positions2[triIndex + 2] = xStartOffset + (i*0.1f) + 0.05f;
+	//	positions2[triIndex + 3] = (top - 0.1f);
+	//	// tri x3,y4
+	//	positions2[triIndex + 4] = xStartOffset + (i*0.1f) - 0.05f;
+	//	positions2[triIndex + 5] = (top - 0.1f);
+
+	//}
+
+
+
 	// OpenGL is a "state" machine
 	// many functions return an 'ID', basically and interger ID for the object, buffer, texture, shader, etc
 	//   then... you use that ID henceforth with OpenGL when you want to refer to that object
 	unsigned int buffer; // buffer is just and 'ID' to 'grab' the OpenGL object
-	glGenBuffers(1, &buffer);
+	glGenBuffers(1, &buffer); // void glGenBuffers( GLsizei n, GLuint * buffers ) // n:  specifies the number of buffer object names to be generated. // buffers:  Specifies an array in which the generated buffer object names are stored.
 	glBindBuffer(GL_ARRAY_BUFFER, buffer); // just a buffer of memory, thus 'GL_ARRAY_BUFFER'
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, positions2_total * sizeof(float), positions2, GL_STATIC_DRAW);
 
 	{
 		// buffers contain data and it's up to us to tell openGL what's in that buffer
@@ -81,21 +118,29 @@ int main(void)
 	
 
 
+
 	///////////////////////////////////////////
 	// MAIN GAME LOOP	         
 	///////////////////////////////////////////
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
+
+		//updateRowPlacement(positions2, positions2_total);
+		//std::cout << "positions2[i] = " << positions2[1] << std::endl;
+
+
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// by default open GL uses -1 to +1 in every dimention x,y,z
 		/* RENDER COOL STUFF */
 
+
 		// use this if you don't have an index buffer
 		// this knows which buffer to draw because we previously bound a buffer using 'glBindBuffer()'
 		glDrawArrays(GL_TRIANGLES, 0, 3); // glDrawArrays(mode, start array index, number of indicies to be rendered)
+		//glDrawArrays(GL_TRIANGLES, 0, (positions2_total/2) ); // glDrawArrays(mode, start array index, number of indicies to be rendered)
 		
 		//glDrawElements();
 
